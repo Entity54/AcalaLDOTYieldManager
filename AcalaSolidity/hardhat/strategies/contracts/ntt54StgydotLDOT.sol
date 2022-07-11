@@ -10,11 +10,6 @@ import "@acala-network/contracts/utils/Address.sol";
  
 
 contract ntt54StgydotLDOT is LpStg2, ADDRESS {
-
-    uint constant public SC_BALANCE_FEES = 1 * 10 ** 12; //sc must always have this ACA balance to be able to run scheduler
-    uint constant public SC_BALANCE_FEES_THRESHOLD = 2 * 10 ** 12; //if SC ACA balance falls below this level we will top it upto Target Level
-    uint constant public SC_BALANCE_FEES_TARGET = 3 * 10 ** 12; //Target ACA balance for feees for sc
-
     IDEX dex = IDEX(ADDRESS.DEX);
     ISchedule schedule = ISchedule(ADDRESS.Schedule);
     IHoma homa = IHoma(ADDRESS.Homa);
@@ -33,12 +28,12 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
     uint public total_DOTinAccount;
     uint public total_LDOTinAccount;
 
-    uint public excessLDOTinAccount;         //only exposed to debug
-    uint public amountAUSDtoSwaptoACA;       //only exposed to debug
-    uint public freshAUSDrewards = 0;        //only exposed to debug
-    uint public freshACArewards  = 0;        //only exposed to debug
-    uint public homaExchangeRate = 0;        //only exposed to debug
-    uint public initialDOTCapitaltoLDOT = 0; //only exposed to debug
+    uint public excessLDOTinAccount;          
+    uint public amountAUSDtoSwaptoACA;       
+    uint public freshAUSDrewards = 0;         
+    uint public freshACArewards  = 0;        
+    uint public homaExchangeRate = 0;        
+    uint public initialDOTCapitaltoLDOT = 0;  
 
 
     uint public total_STGausd = 0;     //Total Strategy tokens for AUSD collection
@@ -128,8 +123,6 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
 
     }
 
-
-
     function unstakeAndWithdrawDOT() external {
         uint userStrategyTokenBalance = userBalances[address(this)][msg.sender] ;
         require(userStrategyTokenBalance >0,"not enough strategy tokens to unstake");
@@ -197,24 +190,18 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
                 homaExchangeRate = homa.getExchangeRate(); //Get exchange rate of liquid currency to staking currency (liquid : staking). range of [0.000000000000000000, 340282366920938463463.374607431768211455]
                 DOT_LDOT = 1e28 / homaExchangeRate;             //Now we know how many LDOT for 1 DOT 
                 initialDOTCapitaltoLDOT = (total_DOTinAccount / 1e10) * DOT_LDOT;
-
    
                 if (initialDOTCapitaltoLDOT < total_LDOTinAccount)
                 {
                     excessLDOTinAccount = total_LDOTinAccount - initialDOTCapitaltoLDOT;
-                    total_LDOTinAccount = initialDOTCapitaltoLDOT;
+                    if (excessLDOTinAccount > 1e11)  //we must have at least 10LDOT rewards to distribut for the whole SC
+                    {
+                        total_LDOTinAccount = initialDOTCapitaltoLDOT;
+                        rebalanceStrategy(excessLDOTinAccount);
+                    }
 
-                    schedule.scheduleCall(
-                        address(this),
-                        0,
-                        1000000,
-                        5000,
-                        2,
-                        abi.encodeWithSignature("rebalanceStrategy()")
-                    );
                 }
 
-  
                 schedule.scheduleCall(
                     address(this),
                     0,
@@ -225,28 +212,22 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
                 );
 
                 ++epochNumber;
-
         }
 
     }
 
 
-    function rebalanceStrategy() public {
+    function rebalanceStrategy(uint excessLDOT) public {
 
         uint initialAUSDavailableBalance = ausd.balanceOf(address(this));
         uint initialACADavailableBalance = aca.balanceOf(address(this));
         freshAUSDrewards = 0;
         freshACArewards  = 0;
 
-        epochNumber = 1234;
-
-        //swap LDOT for AUSD  
         address[] memory path = new address[](2);
         path[0] = ADDRESS.LDOT;
         path[1] = ADDRESS.AUSD;
-        // uint targetReceivedAmountAUSD = dex.getSwapTargetAmount(path, excessLDOTinAccount);
-        require(dex.swapWithExactSupply(path, excessLDOTinAccount, 1), "Swapping LDOT for AUSD failed");
- 
+        require(dex.swapWithExactSupply(path, excessLDOT, 1), "Swapping LDOT for AUSD failed");
  
         if (total_STGaca > 0)
         {
@@ -259,7 +240,6 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
                 address[] memory pathACA = new address[](2);
                 pathACA[0] = ADDRESS.AUSD;
                 pathACA[1] = ADDRESS.ACA;
-                // uint targetReceivedAmountACA = dex.getSwapTargetAmount(pathACA, amountAUSDtoSwaptoACA);
                 require(dex.swapWithExactSupply(pathACA, amountAUSDtoSwaptoACA, 1), "Swapping AUSD for ACA failed");
                 freshACArewards =  aca.balanceOf(address(this)) - initialACADavailableBalance;
             }

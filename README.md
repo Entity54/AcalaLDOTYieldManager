@@ -141,7 +141,7 @@ Upon visiting the DApp, you can see that the screen is divided into two main sec
 <br>
 <br>
 
-![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/2.png)
+![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/1.png)
 <br>
 <br>
 

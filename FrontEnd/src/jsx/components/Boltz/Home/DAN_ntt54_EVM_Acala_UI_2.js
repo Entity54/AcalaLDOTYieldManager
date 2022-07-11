@@ -216,12 +216,12 @@ const UI2 = ({ currentAccount,
           </div>
         </div>
 
-        <div className="row mt-2">
+        {/* <div className="row mt-2">
           <div className="col-xl-1"></div>
           <div className="col-xl-10"  style={{marginTop:"10px"}}>
             <button type="button" className="btn btn-outline-primary btn-lg btn-block"style={{backgroundColor:"#0c0c0c"}} onClick = { () => unstake() } >UNSTAKE DOT</button> 
           </div>
-        </div>
+        </div> */}
 
 
 
