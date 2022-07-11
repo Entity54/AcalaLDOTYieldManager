@@ -23,15 +23,8 @@ import "./css/style.css";
 
 
 // ************ ntt54 smart contracts ************
-const ntt54StgydotLDOT_address = "0xB4a93e484e8A30dE75530d940D3B3604E619CEA3";
-
-// const ntt54StgydotLDOT_address = "";
-
-
-
-//VIDEO
-// const ntt54StgydotLDOT_address = "0xd9C61F207fC8495a7802d6522ad7eB2F98982da5"; //HAS 100 DOT
-
+// const ntt54StgydotLDOT_address = "0xB4a93e484e8A30dE75530d940D3B3604E619CEA3";
+const ntt54StgydotLDOT_address = "0x24C6CC6AA45AC064065a40dAa7E47721aeaaCdE4";
 // ************ ntt54 smart contracts ************
 
 
