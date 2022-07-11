@@ -140,6 +140,7 @@ Upon visiting the DApp, you can see that the screen is divided into two main sec
 - The right side of the screen is where the user configures all of the options for managing the yield from their dot staking before combining everything into a transaction to be submitted to the chain.  
 <br>
 <br>
+
 ![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/2.png)
 <br>
 <br>
@@ -153,6 +154,7 @@ Underneath, we can also see the current rate of LDOT that will be minted per one
 Over on the right side of the screen, we start with a balance section at the top. 
 <br>
 <br>
+
 ![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/2.png)
 <br>
 <br>
@@ -178,6 +180,7 @@ In this instance we have decided that we would like to take our DOT yield and co
 Lastly, we would also like to set the frequency of the LDOT yield harvesting, to be every 120 blocks,  (approximately every 12 minutes). 
 <br>
 <br>
+
 ![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/3.png)
 <br>
 <br>
@@ -189,6 +192,7 @@ Now we can go ahead and start the process by clicking the "stake dot" button and
 After the transaction has mined, the user can see the representation of the strategy tokens,  in LDOT tokens in green in the balances section.
 <br>
 <br>
+
 ![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/4.png)
 <br>
 <br>
@@ -213,6 +217,7 @@ To begin with the administrator has to transfer 3 ACA to the strategy smart cont
 Two metamask transactions need to be completed to approve and the sign the actual transfer of the ACA tokens.
 <br>
 <br>
+
 ![plot](./PrintscreensAcalaLDOTYieldManager/AdminBackEnd/1.png)
 <br>
 <br>
@@ -235,6 +240,7 @@ Since the strategy mandate is to benefit from the continuously decreasing rate o
 During every periodic check,  if the homa epock of 120 blocks has elapsed,  then the DOT / LDOT rate will be decreased. This means that less LDOT are needed to redeem the initial deposited dot.  This also means that the strategy can calculate the excess LDOT and depending on each users preferences, swap it to AUSD and ACA accordingly. 
 <br>
 <br>
+
 ![plot](./PrintscreensAcalaLDOTYieldManager/AdminBackEnd/2.png)
 <br>
 <br>
