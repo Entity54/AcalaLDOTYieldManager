@@ -162,28 +162,14 @@ const getAccountDetailedInfo = async () => {
 
     const excessLDOT_inAccount = (await ntt54StgydotLDOT.excessLDOTinAccount()).toString();
     const excessLDOTinAccount =  formatUnits( excessLDOT_inAccount , 10);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
-    console.log(`excessLDOT_inAccount: `,excessLDOT_inAccount);
+    console.log(`====|||>>> excessLDOT_inAccount: `,excessLDOT_inAccount);
 
     const ausd_scBalance = (await (AUSDinstance.balanceOf(ntt54StgydotLDOT_address))).toString();   
-
     // const registred_Account_AUSD_balance = (await ntt54StgydotLDOT.userBalances(AUSD, walletAddress)).toString(); 
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
-    console.log(`ausd_scBalance: `,ausd_scBalance);
+    console.log(`====|||>>> ausd_scBalance: `,ausd_scBalance);
 
+    const registredAccount_STG_balance = formatUnits( (await ntt54StgydotLDOT.userBalances(ntt54StgydotLDOT_address, walletAddress)).toString() , 10); 
+    console.log(`====|||>>> registredAccount_STG_balance: `,registredAccount_STG_balance);
 
 
 
@@ -259,7 +245,7 @@ const unstakeDOT = async () => {
 
   return new Promise( async (resolve,reject) => {
 
-    const tx = await ntt54StgydotLDOT.unstakeAndWithdrawDOT();
+    const tx = await ntt54StgydotLDOT.unstakeAndWithdrawDOT(); 
     tx.wait().then( message2 => {
       console.log(`unstakeDOT message: `,message2);
       resolve(message2);

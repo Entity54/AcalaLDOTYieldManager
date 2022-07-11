@@ -24,7 +24,10 @@ import "./css/style.css";
 
 // ************ ntt54 smart contracts ************
 // const ntt54StgydotLDOT_address = "0xB4a93e484e8A30dE75530d940D3B3604E619CEA3";
-const ntt54StgydotLDOT_address = "0x24C6CC6AA45AC064065a40dAa7E47721aeaaCdE4";
+const ntt54StgydotLDOT_address = "0x24C6CC6AA45AC064065a40dAa7E47721aeaaCdE4"; //CLEAN
+
+// const ntt54StgydotLDOT_address = "0x493a4bF6E5a9af6E21cB923BaE101189835Db44E";
+
 // ************ ntt54 smart contracts ************
 
 
