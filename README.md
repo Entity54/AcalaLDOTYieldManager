@@ -140,7 +140,7 @@ Upon visiting the DApp, you can see that the screen is divided into two main sec
 - The right side of the screen is where the user configures all of the options for managing the yield from their dot staking before combining everything into a transaction to be submitted to the chain.  
 <br>
 <br>
-![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/1.png)
+![plot](./PrintscreensAcalaLDOTYieldManager/FrontEnd/2.png)
 <br>
 <br>
 
