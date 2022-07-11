@@ -52,7 +52,7 @@
 ***
 <p>
 We have deployed a website 
-<a href="" target="_blank">here</a>
+<a href="https://naacalaevmplus.vercel.app" target="_blank">here</a>
 to showcase our application and hackathon bounty submissions.
 </p>
 <p>
