@@ -19,6 +19,7 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
     ERC20 aca;
     ERC20 ldot;
 
+    uint constant PRECISION = 10**4;
     uint public frequency = 120;                 //how frequently will manage proceeds
     bool public managingProceedsState = true;    //allows admin to start/stop manageProceeds
     uint public DOT_LDOT;                        //how many LDOT for 1 DOT only exposed to debug
@@ -80,7 +81,8 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
 
     function depositDOT(uint amount, uint percentAUSD) external {
         //make sure approve smart contract as spender for this balance
-        require(amount <= dot.allowance(msg.sender,address(this)),"client needs to increase allowance");
+        require(amount <= dot.allowance(msg.sender,address(this)) && amount>100,"client needs to increase allowance");
+        require(percentAUSD <=100, "percentAUSD exceeds 100");
 
         if( !registeredUserAccounts[msg.sender] )
         {
@@ -98,13 +100,12 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
     function stakeDOT() external {
         if (userStakedDOT[msg.sender] < userBalances[ADDRESS.DOT][msg.sender])
         {
-            // STG tokens are 1:1 with DOT deposited at all times
+            // STG tokens are ERC20 tokens but track DOT deposited at all times
             uint amount = userBalances[ADDRESS.DOT][msg.sender] - userStakedDOT[msg.sender] ;
-            uint newSTGausd = (amount / 100) * userPercentAUSD[msg.sender];
+            uint newSTGausd = (amount  / 100 ) * userPercentAUSD[msg.sender] ;
             uint newSTGaca = amount -  newSTGausd;
             userSTGausd[msg.sender] +=newSTGausd;
-            userSTGaca[msg.sender] = newSTGaca;
-            
+            userSTGaca[msg.sender]  +=newSTGaca;            
             total_STGausd +=newSTGausd;
             total_STGaca  +=newSTGaca;
 
@@ -166,12 +167,10 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
                     userAccounts[i] = userAccounts[userAccountlengthM1];
                 }
                 userAccounts.pop();
-                
             }
         }
         
     }
-
 
     function startManagingProcees() onlyAdmin external {
         managingProceedsState = true;
@@ -182,24 +181,24 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
         managingProceedsState = false;
     }
 
-
     function manageProceeds() onlyAdmiOrStgySC public {
 
         if (managingProceedsState)
         {
                 homaExchangeRate = homa.getExchangeRate(); //Get exchange rate of liquid currency to staking currency (liquid : staking). range of [0.000000000000000000, 340282366920938463463.374607431768211455]
                 DOT_LDOT = 1e28 / homaExchangeRate;             //Now we know how many LDOT for 1 DOT 
-                initialDOTCapitaltoLDOT = (total_DOTinAccount / 1e10) * DOT_LDOT;
+                initialDOTCapitaltoLDOT = (total_DOTinAccount * DOT_LDOT ) / 1e10;
    
                 if (initialDOTCapitaltoLDOT < total_LDOTinAccount)
                 {
                     excessLDOTinAccount = total_LDOTinAccount - initialDOTCapitaltoLDOT;
-                    if (excessLDOTinAccount > 1e11)  //we must have at least 10LDOT rewards to distribut for the whole SC
+                    //normally we should set at least 10LDOT 1e11 rewards to distribute for the whole SC so swap fees become insignificant
+                    //but for hackathon we leave at low number
+                    if (excessLDOTinAccount > 1e9)  //1e11
                     {
                         total_LDOTinAccount = initialDOTCapitaltoLDOT;
                         rebalanceStrategy(excessLDOTinAccount);
                     }
-
                 }
 
                 schedule.scheduleCall(
@@ -217,39 +216,33 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
     }
 
 
-    function rebalanceStrategy(uint excessLDOT) public {
-
-        uint initialAUSDavailableBalance = ausd.balanceOf(address(this));
-        uint initialACADavailableBalance = aca.balanceOf(address(this));
+    function rebalanceStrategy(uint excessLDOT) onlyAdmiOrStgySC private {
         freshAUSDrewards = 0;
         freshACArewards  = 0;
 
         address[] memory path = new address[](2);
         path[0] = ADDRESS.LDOT;
         path[1] = ADDRESS.AUSD;
+        freshAUSDrewards = dex.getSwapTargetAmount(path, excessLDOT);
         require(dex.swapWithExactSupply(path, excessLDOT, 1), "Swapping LDOT for AUSD failed");
  
         if (total_STGaca > 0)
         {
-            freshAUSDrewards =  ausd.balanceOf(address(this)) - initialAUSDavailableBalance;
-
-            amountAUSDtoSwaptoACA = (total_STGaca * freshAUSDrewards) / totalSupply() ;
+            amountAUSDtoSwaptoACA = ( ( (total_STGaca  *  PRECISION) / totalSupply() ) * freshAUSDrewards ) / PRECISION;
             if (amountAUSDtoSwaptoACA > 0)
             {
                 //swap AUSD for ACA
                 address[] memory pathACA = new address[](2);
                 pathACA[0] = ADDRESS.AUSD;
                 pathACA[1] = ADDRESS.ACA;
+                freshACArewards = dex.getSwapTargetAmount(pathACA, amountAUSDtoSwaptoACA);
                 require(dex.swapWithExactSupply(pathACA, amountAUSDtoSwaptoACA, 1), "Swapping AUSD for ACA failed");
-                freshACArewards =  aca.balanceOf(address(this)) - initialACADavailableBalance;
+                freshAUSDrewards -=amountAUSDtoSwaptoACA;
             }
         }
 
-        freshAUSDrewards =  ausd.balanceOf(address(this)) - initialAUSDavailableBalance;
-
         allocate(freshAUSDrewards, freshACArewards);
     }
-
 
     function allocate(uint _freshAUSDrewards, uint _freshACArewards) private {
 
@@ -259,18 +252,16 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
                 
                 if (total_STGausd>0 && userSTGausd[userAccount]>0 && _freshAUSDrewards>0)
                 {
-                    uint creditAUSDtoUser = ( userSTGausd[userAccount] / total_STGausd ) * _freshAUSDrewards ;
+                    uint creditAUSDtoUser = ( ( (userSTGausd[userAccount]  *  PRECISION) / total_STGausd ) * _freshAUSDrewards ) / PRECISION   ;
                     userBalances[ADDRESS.AUSD][userAccount] +=creditAUSDtoUser;
                 }
 
                 if (total_STGaca>0 && userSTGaca[userAccount]>0 && _freshACArewards>0)
                 {
-                    uint creditACAtoUser = ( userSTGaca[userAccount] / total_STGaca ) * _freshACArewards ;
+                    uint creditACAtoUser = ( ( (userSTGaca[userAccount]  *  PRECISION) / total_STGaca ) * _freshACArewards ) / PRECISION   ;
                     userBalances[ADDRESS.ACA][userAccount] +=creditACAtoUser;
                 }
-                    
             }
-
     }
 
     function claimRewards() external {
@@ -287,7 +278,6 @@ contract ntt54StgydotLDOT is LpStg2, ADDRESS {
             userBalances[ADDRESS.ACA][msg.sender] = 0;
             aca.transfer(msg.sender, userClaimableACA);
         }
-
     }
 
 

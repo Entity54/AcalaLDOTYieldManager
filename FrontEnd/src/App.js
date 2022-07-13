@@ -23,7 +23,9 @@ import "./css/style.css";
 
 
 // ************ ntt54 smart contracts ************
-const ntt54StgydotLDOT_address = "0x90067B8C5f8CB3AD71A6c5f54701823B6B745dd1";  
+//1e11 LDOT FOR REBALANCING Website RUNNING
+// const ntt54StgydotLDOT_address = "0x90067B8C5f8CB3AD71A6c5f54701823B6B745dd1";
+const ntt54StgydotLDOT_address = "0xa2e0f5BC894819224f3D6D44D562276e66676f45";  
 // ************ ntt54 smart contracts ************
 
 
@@ -247,7 +249,9 @@ function App (props) {
         });
     }
 
-    const jsonRpcProvider = new ethers.providers.JsonRpcProvider("https://tc7-eth.aca-dev.network");
+    // const jsonRpcProvider = new ethers.providers.JsonRpcProvider("https://tc7-eth.aca-dev.network");
+    const jsonRpcProvider = new ethers.providers.JsonRpcProvider("https://acala-mandala-adapter.api.onfinality.io/public");
+
     parachain(jsonRpcProvider).catch((er) => { console.log(`APP.JS parachain Error: `,er);  });
   }, []);  
   //#endregion  parachain events setup

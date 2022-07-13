@@ -36,7 +36,7 @@ const DEX = ({ currentAccount, acaBalance, ausdBalance,  dotBalance, ldotBalance
 						<div className="col-xl-3"></div>
 						<div className="col-xl-3 col-xxl-12">
 							<br/>
-							<Card style={{backgroundColor:"#0c0c0c", marginBottom:"0px",  marginTop:"-20px"}}>
+							<Card style={{backgroundColor:"#0c0c0c", marginBottom:"120px",  marginTop:"-20px"}}>
 								<Card.Body>
 								<div className="custom-tab-1" >
 												<EVMAcalaUI1 

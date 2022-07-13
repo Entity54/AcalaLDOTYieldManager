@@ -257,6 +257,25 @@ const unstakeDOT = async () => {
 }
 //#endregion 
 
+//#region swapLDOT
+// const swapLDOT = async (amount) => {
+//   const amountWEI = parseUnits(amount,10);
+//   console.log(`Running swapLDOT for amountWEI:${amountWEI} amount:${amount}`);
+
+//   return new Promise( async (resolve,reject) => {
+
+//     const tx = await ntt54StgydotLDOT.testDex(amountWEI);
+//     tx.wait().then( message2 => {
+//       console.log(`swapLDOT message: `,message2);
+//       resolve(message2);
+//     })
+//     .catch( error => reject(error));
+
+//   })
+
+// }
+//#endregion 
+
 
 //#region updateFrequency
 const updateFrequency = async (amount) => {
@@ -367,46 +386,6 @@ const getAccount_STR1_Balance = async (accountAddress) => {
 }
 //#endregion
 
-//#region
-// //NO   ntt54StgyAUSDincome
-// const getAccount_STR1_Balance = async (accountAddress) => {
-//   // if (accountAddress && ntt54StgyAUSDincome)
-//   // {
-//   //   console.log("Getting account STR1 / ntt54StgyAUSDincome Balance Please wait");
-//   //   const STR1_BalanceWEI = await ntt54StgyAUSDincome.balanceOf(accountAddress);
-//   //   const STR1_Balance    = formatUnits(STR1_BalanceWEI.toString()   , 10);
-//   //   return Number(STR1_Balance).toFixed(3);
-//   // }
-//   // else return null;
-// }
-
-// ////NO  ntt54StgyDOTincome
-// const getAccount_STR2_Balance = async (accountAddress) => {
-//   // if (accountAddress && ntt54StgyDOTincome)
-//   // {
-//   //   console.log("Getting account STR2  / ntt54StgyDOTincome Balance Please wait");
-//   //   const STR2_BalanceWEI = await ntt54StgyDOTincome.balanceOf(accountAddress);
-//   //   const STR2_Balance    = formatUnits(STR2_BalanceWEI.toString()   , 10);
-//   //   return Number(STR2_Balance).toFixed(3);
-//   // }
-//   // else return null;
-//   return null;
-// }
-
-// ////NO  ntt54StgyACAincome
-// const getAccount_STR3_Balance = async (accountAddress) => {
-//   // if (accountAddress && ntt54StgyACAincome)
-//   // {
-//   //   console.log("Getting account STR3 / ntt54StgyACAincome Balance Please wait");
-//   //   const STR3_BalanceWEI = await ntt54StgyACAincome.balanceOf(accountAddress);
-//   //   const STR3_Balance    = formatUnits(STR3_BalanceWEI.toString()   , 10);
-//   //   return Number(STR3_Balance).toFixed(3);
-//   // }
-//   // else return null;
-//   return null;
-// }
-//#endregion
-
 
 const getStrategy_AUSD_Balance = async () => {
   if (ntt54StgydotLDOT_address && AUSDinstance)
@@ -508,5 +487,7 @@ export {
   deposit_FeesToStrategy,
   startStrategy,
   stopStrategy,
+
+  // swapLDOT,
 
 }

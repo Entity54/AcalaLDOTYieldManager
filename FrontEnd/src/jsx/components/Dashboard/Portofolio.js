@@ -134,13 +134,13 @@ const Portofolio = ({
 
 	return(
 		<>
-				<div className="col-xl-12" style={{marginTop:"-50px", backgroundColor:"",height:"110%",}}>
+				<div className="col-xl-12" style={{marginTop:"-50px"}}>
 					<div className="row"> 
 					 
-						<div className="col-xl-3"></div>
-						<div className="col-xl-6 col-xxl-12" style={{backgroundColor:""}}>
+						<div className="col-xl-1"></div>
+						<div className="col-xl-10 col-xxl-12" style={{backgroundColor:""}}>
 							<br/>
-							<Card style={{backgroundColor:"#0c0c0c", marginBottom:"0px", backgroundColor:"", overflowY:"scroll", marginTop:"-10px"}}>
+							<Card style={{backgroundColor:"#0c0c0c", marginBottom:"-15px",backgroundColor:"", marginTop:"5px"}}>
 								<Card.Body>
 								<div className="custom-tab-1" >
 
@@ -148,13 +148,13 @@ const Portofolio = ({
 
 
 								<div className="col-xl-12 col-lg-12 col-xxl-12 p-0 m-0">
-            	<div className="card mb-0" style={{color:"#9E38FF", backgroundColor:"#0c0c0c", marginTop:"-10px"}}>
+            	<div className="card mb-0" style={{color:"#9E38FF", backgroundColor:"", marginTop:"-10px"}}>
               		<div className="card-body px-4 py-0">
 					  	<div className="row">
 							<div className="col-xl-6 col-lg-12 col-xxl-12 p-0 m-0"style={{backgroundColor:""}}>
-								<Card className="mt-1 align-items-center pt-2 pt-0"style={{backgroundColor:"#0c0c0c"}}>
+								<Card className="mt-1 align-items-center pt-0 mb-3"style={{backgroundColor:""}}>
 								
-								<div className="form-head mb-sm-3 mb-3 d-flex align-items-center flex-wrap mt-3 text-head">
+								<div className="form-head d-flex align-items-center flex-wrap mt-3 text-head">
 									<Link to={"#"} className="btn btn-outline-primary me-3 mb-2 rounded">
 										<input type="text" value = {feesForStrategy} placeholder="New Reward Per Epoch" className="form-control" style={{color:"white", width:"200px"}} onChange={(event) => {  
 															setFeesForStrategy(event.target.value);
@@ -189,14 +189,14 @@ const Portofolio = ({
 
 							<Col xl="2"></Col>
 							<Col xl="8">
-								<Card className="mt-5"style={{backgroundColor:"#0c0c0c"}}>
+								<Card className="mt-3 mb-3"style={{backgroundColor:""}}>
 									<Card.Header className=" d-block text-center pb-2">
 										<Card.Title>Strategy Control</Card.Title>
 											<Card.Text className="mb-0 subtitle">
 												Start and Stop Strategies
 											</Card.Text>
 									</Card.Header>
-									<Card.Body className="pb-2">
+									<Card.Body className="pb-2 mx-auto">
 								
 
 										<ButtonGroup className="mb-4 me-2">
@@ -319,7 +319,7 @@ const Portofolio = ({
 						<div className="col-xl-12 col-xxl-8">
 
 							<div className="card mb-0"style={{backgroundColor:"#202020"}}>
-								<div className="card-header border-0 pt-3 pb-0 align-items-center">
+								<div className="card-header border-0 pt-1 pb-0 align-items-center">
 									<h3 className="mb-0 text-center mx-auto">MetaMask Account Smart Contract Registered Values </h3>
 									<div className="form-head mb-sm-3 mb-3 d-flex align-items-center flex-wrap mt-3 text-head">
 										<Link to={"#"} className="btn btn-primary me-3 mb-2 py-2 px-3 rounded">
